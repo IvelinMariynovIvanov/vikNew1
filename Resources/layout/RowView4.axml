@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_marginBottom="0.0dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="@drawable/linearlayoutborder">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/horizontalline" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="15px"
+            android:minHeight="15px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout2"
+            android:gravity="center"
+            android:layout_marginTop="0.0dp"
+            android:paddingTop="3dp">
+            <TextView
+                android:text="1040048"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@android:color/primary_text_light"
+                android:id="@+id/BillNumber"
+                android:layout_marginLeft="10dp" />
+            <TextView
+                android:text="МИЛЕН ЗАМФИРОВ МИЛИТИЕВ"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/primary_text_light"
+                android:id="@+id/FullName"
+                android:gravity="right"
+                android:layout_marginRight="10dp"
+                android:fontFamily="#Roboto"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <RelativeLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout8"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp">
+            <TextView
+                android:text="гр.Русе, ул.Петър Берон 14"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Address"
+                android:layout_alignParentEnd="true"
+                android:textColor="#6C6C6C"
+                android:textStyle="italic"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D9D7D8"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/linearLayout4"
+            android:weightSum="100"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:text="дължима сума :"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:id="@+id/moneyToPay"
+                android:textColor="#6C6C6C"
+                android:textStyle="italic"
+                android:gravity="right"
+                android:textSize="12dp" />
+            <TextView
+                android:text="25, 38 лв"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_weight="65"
+                android:layout_height="wrap_content"
+                android:id="@+id/txtMonetToPayInDecimal"
+                android:textColor="@android:color/primary_text_light"
+                android:textStyle="bold"
+                android:layout_marginLeft="5dp"
+                android:textSize="12dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/linearLayout3"
+            android:weightSum="100"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="3dp">
+            <TextView
+                android:text="срок за плащане :"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/endData"
+                android:textColor="#6C6C6C"
+                android:layout_weight="50"
+                android:gravity="right"
+                android:textStyle="italic"
+                android:textSize="12dp" />
+            <TextView
+                android:text="15.11.2017"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/endDateValue"
+                android:textColor="@android:color/primary_text_light"
+                android:layout_weight="65"
+                android:layout_marginLeft="5dp"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D9D7D8"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/linearLayout5"
+            android:weightSum="100"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+            <TextView
+                android:text="старо задължение :"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/oldBIll"
+                android:textColor="#6C6C6C"
+                android:layout_weight="50"
+                android:gravity="right"
+                android:textStyle="italic"
+                android:textSize="12dp" />
+            <TextView
+                android:text="7658,22 лв"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tOldBillInDecimal"
+                android:textColor="@android:color/primary_text_light"
+                android:layout_weight="65"
+                android:layout_marginLeft="5dp"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout6"
+            android:weightSum="100">
+            <TextView
+                android:text="дата на отчитане :"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/reportDate"
+                android:textColor="#6C6C6C"
+                android:layout_weight="50"
+                android:textStyle="italic"
+                android:gravity="right"
+                android:textSize="12dp" />
+            <TextView
+                android:text="11.11.2017 14:00-14:30"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/repoprtDate"
+                android:textColor="@android:color/primary_text_light"
+                android:layout_weight="51"
+                android:layout_marginLeft="5dp"
+                android:textSize="12dp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.1dp"
+            android:background="#D9D7D8"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" />
+        <LinearLayout
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="fill_parent"
+            android:id="@+id/LinearLayout11"
+            android:weightSum="100"
+            android:layout_height="18dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="9dp"
+            android:layout_marginRight="9dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp">
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:text="Изтрий"
+                android:id="@+id/DeleteImg"
+                android:textColor="#06AAF4"
+                android:textSize="12dp"
+                android:layout_weight="50" 
+                android:background="@android:color/background_light"
+                android:maxHeight="36dp"
+                android:gravity="right"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="35dp" />
+            <Button
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:maxHeight="36dp"
+                android:layout_width="match_parent"
+                android:id="@+id/EditImg"
+                android:text="Редактирай"
+                android:textSize="12dp"
+                android:layout_weight="60"
+                android:background="@android:color/background_light"
+                android:layout_height="wrap_content"
+                android:textColor="#06AAF4"
+                android:layout_marginLeft="35dp"
+                android:gravity="left" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+</LinearLayout>

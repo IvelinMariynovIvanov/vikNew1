@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:orientation="vertical"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="match_parent"
+    p1:layout_height="wrap_content"
+    p1:id="@+id/linearLayout1">
+    <android.support.v7.widget.Toolbar
+        p1:id="@+id/basicToolbar1"
+        p1:minHeight="?attr/actionBarSize"
+        p1:background="@drawable/horizontalline"
+        p1:layout_width="match_parent"
+        p1:layout_height="wrap_content"
+        p1:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <LinearLayout
+        p1:orientation="vertical"
+        p1:id="@+id/linearLayout3"
+        p1:layout_width="match_parent"
+        p1:layout_height="match_parent"
+        p1:background="@drawable/linearlayoutborder"
+        p1:layout_marginLeft="25dp"
+        p1:layout_marginRight="25dp"
+        p1:layout_marginTop="25dp">
+        <View
+            p1:layout_width="match_parent"
+            p1:layout_height="5dp"
+            p1:background="@drawable/horizontalline" />
+        <EditText
+            p1:hint="Абонатен номер"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/BillNumber"
+            p1:layout_marginLeft="10dp"
+            p1:layout_marginRight="10dp"
+            p1:inputType="number" />
+        <EditText
+            p1:hint="ЕГН"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/EGN"
+            p1:layout_marginLeft="10dp"
+            p1:layout_marginRight="10dp"
+            p1:inputType="number" />
+        <RelativeLayout
+            p1:layout_width="match_parent"
+            p1:id="@+id/relativeLayout1"
+            p1:gravity="right"
+            p1:layout_height="30dp"
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_marginEnd="10dp"
+            p1:layout_marginLeft="10dp">
+            <TextView
+                p1:textAppearance="?android:attr/textAppearanceMedium"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/error"
+                p1:textColor="@android:color/holo_red_dark"
+                p1:gravity="center"
+                p1:textSize="12dp"
+                p1:layout_marginBottom="3dp"
+                p1:layout_alignParentStart="true"
+                p1:text="test"
+                p1:layout_marginLeft="5dp" />
+            <Button
+                p1:text="Добави"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/AddCustomer"
+                p1:maxHeight="36dp"
+                p1:textColor="#06AAF4"
+                p1:textSize="12dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                p1:layout_marginBottom="3dp"
+                p1:background="@android:color/background_light"
+                p1:gravity="center"
+                p1:layout_alignParentEnd="true" />
+        </RelativeLayout>
+        <View
+            p1:layout_width="match_parent"
+            p1:layout_height="3dp"
+            p1:background="@android:color/darker_gray"
+            p1:id="@+id/View1" />
+    </LinearLayout>
+</LinearLayout>

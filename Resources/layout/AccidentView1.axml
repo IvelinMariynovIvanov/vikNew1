@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:p1="http://schemas.android.com/apk/res/android"
+    p1:minWidth="25px"
+    p1:minHeight="25px"
+    p1:layout_width="wrap_content"
+    p1:layout_height="wrap_content"
+    p1:id="@+id/scrollView1">
+    <LinearLayout
+        p1:orientation="vertical"
+        p1:id="@+id/linearLayout3"
+        p1:layout_width="wrap_content"
+        p1:layout_height="wrap_content"
+        p1:background="@drawable/linearlayoutborder">
+        <android.support.v7.widget.Toolbar
+            p1:id="@+id/basicToolbar"
+            p1:minHeight="?attr/actionBarSize"
+            p1:background="@drawable/horizontalline"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        <View
+            p1:layout_width="match_parent"
+            p1:layout_height="5dp"
+            p1:background="@drawable/horizontalline" />
+        <EditText
+            p1:hint="Населено място"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/City"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:inputType="textPhonetic" 
+            p1:digits="abcdefghijklmnopqrstuvwxyz "/>
+        <EditText
+            p1:hint="Адрес"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/Address"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp" 
+            p1:digits="abcdefghijklmnopqrstuvwxyz,№ "/>
+        <EditText
+            p1:hint="Описание на аварията"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/Description"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:inputType="textImeMultiLine" 
+            p1:digits="abcdefghijklmnopqrstuvwxyz "/>
+        <EditText
+            p1:hint="Име, презиме, фамилия"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/FullName"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:inputType="textPersonName" 
+            p1:digits="abcdefghijklmnopqrstuvwxyz "/>
+        <EditText
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/phoneNumber"
+            p1:layout_marginBottom="15dp"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:hint="Телефон"
+            p1:inputType="phone" 
+            p1:digits="0123456789"/>
+        <RelativeLayout
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="wrap_content"
+            p1:id="@+id/relativeLayout1"
+            p1:gravity="center"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:layout_height="36dp">
+            <Button
+                p1:text="Галерия"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/Gallery"
+                p1:layout_alignParentRight="true"
+                p1:background="@android:color/background_light"
+                p1:layout_marginLeft="16dp"
+                p1:textColor="#06AAF4"
+                p1:textSize="12dp"
+                style="@style/Widget.AppCompat.Button.Borderless" />
+            <Button
+                p1:text="Камера"
+                p1:layout_width="wrap_content"
+                p1:layout_height="wrap_content"
+                p1:id="@+id/Camera"
+                p1:layout_toStartOf="@+id/Gallery"
+                p1:background="@android:color/background_light"
+                p1:textColor="#06AAF4"
+                p1:layout_marginLeft="16dp"
+                p1:layout_marginRight="16dp"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                p1:textSize="12dp" />
+        </RelativeLayout>
+        <ImageView
+            p1:layout_width="match_parent"
+            p1:layout_height="150dp"
+            p1:id="@+id/imageView1"
+            p1:src="@drawable/Icon"
+            p1:scaleType="fitCenter"
+            p1:layout_marginLeft="15dp"
+            p1:layout_marginRight="15dp"
+            p1:layout_marginTop="15dp" />
+        <RelativeLayout
+            p1:minWidth="25px"
+            p1:minHeight="25px"
+            p1:layout_width="match_parent"
+            p1:layout_height="wrap_content"
+            p1:id="@+id/relativeLayout2"
+            p1:layout_marginBottom="10dp">
+            <Button
+                p1:text="Изпрати"
+                p1:layout_width="wrap_content"
+                p1:layout_height="36dp"
+                p1:id="@+id/Sent"
+                p1:layout_gravity="right"
+                p1:background="@android:color/background_light"
+                p1:textColor="#06AAF4"
+                p1:shadowColor="#ff00ffff"
+                p1:shadowDx="111"
+                p1:shadowDy="111"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                p1:textSize="12dp"
+                p1:layout_alignParentEnd="true"
+                p1:layout_marginEnd="15dp" />
+            <TextView
+                p1:text="Попълнете полетата"
+                p1:textAppearance="?android:attr/textAppearanceMedium"
+                p1:layout_width="wrap_content"
+                p1:layout_height="match_parent"
+                p1:id="@+id/error"
+                p1:layout_toLeftOf="@+id/Sent"
+                p1:textColor="@android:color/holo_red_dark"
+                p1:gravity="center_vertical"
+                p1:textSize="12dp" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>
