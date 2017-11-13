@@ -32,6 +32,7 @@ namespace ListViewTask
         public List<Customer> mCutomersFromNotification = new List<Customer>();
         public string mCustomersFromNotificationAsString = string.Empty;
 
+        private List<Customer> mTempFetchCollection = new List<Customer>();
 
         private List<Customer> countНotifyReadingustomers = new List<Customer>();
         private List<Customer> countНotifyInvoiceOverdueCustomers = new List<Customer>();
@@ -128,7 +129,7 @@ namespace ListViewTask
                 JobInfo.Builder builder = new JobInfo.Builder(kJobId++, JobScheduler);
 
                 builder.SetRequiredNetworkType(NetworkType.Any);
-                builder.SetPeriodic(40000); // 2400000  40 min, 7200000,  ////////////3600000
+                builder.SetPeriodic(3600000); // 2400000  40 min, 7200000,  ////////////3600000
                                        // builder.SetPeriodic(900000); // 2400000  40 min,                  // 1500    20 000 - 2s  // 25 min
                 builder.SetPersisted(true);
 
@@ -483,8 +484,15 @@ namespace ListViewTask
                     }
                 }
 
+                int testNullResponse = 0;
+
+                foreach (var item in mCustomers)
+                {
+                    mTempFetchCollection.Add(item);
+                }
+
                 foreach (var customer in mCustomers)
-                    {
+                {
 
                     bool isReceiveNotifyNewInvoiceCheck = false;
                     bool isReceiveNotifyInvoiceOverdueCheck = false;
@@ -494,10 +502,19 @@ namespace ListViewTask
                     isReceiveNotifyInvoiceOverdueCheck = customer.NotifyInvoiceOverdue;
                     isReciveNotifyReadingCheck = customer.NotifyReading;
 
+                    string billNumber = customer.Nomer.ToString();
+                    string egn = customer.EGN.ToString();
+
+                    string realUrl = "http://192.168.2.222/VIKWebApi/" + "api/abonats/"
+                        + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
+                        + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
+
+                    mTempFetchCollection.Remove(customer);
+
+
                     // if(isAnyNotifycationCheck == true)
                     //   {
-                    string billNumber = customer.Nomer.ToString();
-                        string egn = customer.EGN.ToString();
+                 
 
                     //CREATE test URL
                      string url = "http://192.168.2.222/VIKWebApi/";
@@ -507,18 +524,32 @@ namespace ListViewTask
                     //                 + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/";
                     //               // + isReceiveNotifyNewInvoiceToday + "/" + isReceiveNotifyInvoiceOverdueToday + "/" + isReciveNotifyReadingToday + "/";
 
-                    string realUrl = "http://192.168.2.222/VIKWebApi/" + "api/abonats/"
-                        + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
-                        + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/"; 
 
-                    var jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
 
-                        //check the api
-                        if (jsonResponse == null)
+                    //  var jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
+
+                    string jsonResponse = string.Empty;
+                   
+                    if (testNullResponse >= 1)
+                    {
+                        jsonResponse = null;
+                    }
+
+                    else
+                    {
+                        jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
+                    }
+
+                    //check the api
+                    if (jsonResponse == null)
                         {
                             RunOnUiThread(() => RefreshProgressDialogAndToastWhenNoConnectioToApi());
 
-                            return;
+                        //  mAllUpdateCustomerFromApi.AddRange(mTempFetchCollection);
+
+                            mAllUpdateCustomerFromApi.Add(customer);
+
+                           // return;
                         }
 
                         // check in vikSite is there a customer with this billNumber (is billNumber correct)
@@ -526,7 +557,8 @@ namespace ListViewTask
                         {
                             RefreshProgressDialogAndToastWhenInputIsNotValid();
 
-                            return;
+                            mAllUpdateCustomerFromApi.Add(customer);
+                        // return;
                         }
 
                         // check is billNumber correct and get and save customer in phone
@@ -546,73 +578,14 @@ namespace ListViewTask
                             updateCutomerButNoNotify.NotifyReading = customer.NotifyReading;
 
 
-                            ///////////////// be6e customer.ReceiveNotifyInvoiceOverdueToday
-                            //bool isAnyNotifycationCheck =
-                            //         (newCustomer.ReceiveNotifyInvoiceOverdueToday == true ||
-                            //         newCustomer.ReceiveNotifyNewInvoiceToday == true ||
-                            //         newCustomer.ReciveNotifyReadingToday == true);
-
-
-                            //    if (isAnyNotifycationCheck == true)
-                            //    {
-                            //        mCustomerFromApiToNotifyToday.Add(newCustomer);
-
-                            //    }
-
-
-
-
-                          //  Customer updateCutomerButNoNotify = connectToApi.GetCustomerFromApi(jsonResponse);
-
-                            //updateCutomerButNoNotify.NotifyInvoiceOverdue = customer.NotifyInvoiceOverdue;
-                            //updateCutomerButNoNotify.NotifyNewInvoice = customer.NotifyNewInvoice;
-                            //updateCutomerButNoNotify.NotifyReading = customer.NotifyReading;
-
-                            /////////////////////////////////////////////////////////////////////////////////////////////////////
-                            //if(updateCutomerButNoNotify.ReceiveNotifyInvoiceOverdueToday == true)
-                            //{
-                            //    updateCutomerButNoNotify.ReceiveNotifyInvoiceOverdueToday = true;
-                            //}
-                            //else
-                            //{
-                            //    updateCutomerButNoNotify.ReceiveNotifyInvoiceOverdueToday = customer.ReceiveNotifyInvoiceOverdueToday;
-                            //}
-
-                            //if (updateCutomerButNoNotify.ReceiveNotifyNewInvoiceToday == true)
-                            //{
-                            //    updateCutomerButNoNotify.ReceiveNotifyNewInvoiceToday = true;
-                            //}
-                            //else
-                            //{
-                            //    updateCutomerButNoNotify.ReceiveNotifyNewInvoiceToday = customer.ReceiveNotifyNewInvoiceToday;
-                            //}
-
-                            //if (updateCutomerButNoNotify.ReciveNotifyReadingToday == true)
-                            //{
-                            //    updateCutomerButNoNotify.ReciveNotifyReadingToday = true;
-                            //}
-                            //else
-                            //{
-                            //    updateCutomerButNoNotify.ReciveNotifyReadingToday = customer.ReciveNotifyReadingToday;
-                            //}
-                            //////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-                            //updateCutomerButNoNotify.ReceiveNotifyInvoiceOverdueToday = customer.ReceiveNotifyInvoiceOverdueToday;
-                            //updateCutomerButNoNotify.ReceiveNotifyNewInvoiceToday = customer.ReceiveNotifyNewInvoiceToday;
-                            //updateCutomerButNoNotify.ReciveNotifyReadingToday = customer.ReciveNotifyReadingToday;
-
-
-                            //Customer updateCutomerButNoNotify = new Customer();
-                            //updateCutomerButNoNotify = newCustomer;
-
-                            //updateCutomerButNoNotify.ReceiveNotifyInvoiceOverdueToday = false;
-                            //updateCutomerButNoNotify.ReceiveNotifyNewInvoiceToday = false;
-                            //updateCutomerButNoNotify.ReciveNotifyReadingToday = false;
-
                             mAllUpdateCustomerFromApi.Add(updateCutomerButNoNotify);     ////////////updateCutomerButNoNotify
 
-                        }
+                            testNullResponse++;
+                            //mTempFetchCollection.Remove(customer);
+
+                           // SaveUpdatesInPhone(pref, mDate.Text.ToString(), mHour.Text.ToString());
+
+                             }
                             else
                             {
                                 RunOnUiThread(() =>
@@ -645,9 +618,11 @@ namespace ListViewTask
 
                     SaveUpdatesInPhone(pref, mDate.Text.ToString(), mHour.Text.ToString());
 
-                    //MyNotification myNotification = new MyNotification(this);
+                   
 
-                    //myNotification.SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
+                //MyNotification myNotification = new MyNotification(this);
+
+                //myNotification.SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
 
                     SentNoficationForNewInovoice(countNewНotifyNewInvoiceCustomers);
 
