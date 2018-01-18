@@ -44,8 +44,8 @@ namespace ListViewTask
         private Android.Support.V7.Widget.Toolbar mToolBar;
         private Android.Telephony.TelephonyManager mTelephonyMgr;
         private string mPhoneNumber;
-      //  private CustomerListWrapper customerWrapper = new CustomerListWrapper();
         private ListView mListView;
+
         private TextView mHour;
         private TextView mDate;
         private TextView mAbonati;
@@ -60,6 +60,7 @@ namespace ListViewTask
 
         private int fetchFromPressButton = 1;
 
+       
 
         #region Job Service fields
         public int kJobId;
@@ -68,6 +69,7 @@ namespace ListViewTask
         private bool isServiceAlreadyRunning = false;
         private ComponentName JobScheduler;
         private MyJobService testService;
+       
         #endregion
 
         protected override void OnCreate(Bundle bundle)
@@ -75,8 +77,6 @@ namespace ListViewTask
 
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.Main);
-
-            //  Thread.CurrentThread.CurrentCulture = new CultureInfo("bg-BG");
 
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("bg-BG");
 
@@ -93,13 +93,7 @@ namespace ListViewTask
             SupportActionBar.Title = "Начало ";
 
             mJobScheduler =  (JobScheduler)GetSystemService(Context.JobSchedulerService);
-            //  mJobScheduler = (JobScheduler)(android.app.JobSchedulerImpl@8652ee9);
-            // JobInfo job = new JobInfo();
-            // mJobScheduler.Schedule(job);
-
-           //  mJobScheduler.CancelAll();
-         
-            // !=
+       
             if (mJobScheduler == null || mJobScheduler.AllPendingJobs.Count == 0)
             {
                 StartService();
@@ -120,7 +114,6 @@ namespace ListViewTask
 
             if(mJobScheduler != null)
             {
-                // Thread.CurrentThread.CurrentCulture = new CultureInfo("bg-BG");
                 CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("bg-BG");
 
                 mJobScheduler = (JobScheduler)GetSystemService(Context.JobSchedulerService);
@@ -129,8 +122,9 @@ namespace ListViewTask
                 JobInfo.Builder builder = new JobInfo.Builder(kJobId++, JobScheduler);
 
                 builder.SetRequiredNetworkType(NetworkType.Any);
-                builder.SetPeriodic(3600000); // 2400000  40 min, 7200000,  ////////////3600000
-                                       // builder.SetPeriodic(900000); // 2400000  40 min,                  // 1500    20 000 - 2s  // 25 min
+
+                builder.SetPeriodic(3600000); 
+                                       
                 builder.SetPersisted(true);
 
                 mJobScheduler.Schedule(builder.Build());
@@ -145,14 +139,10 @@ namespace ListViewTask
             GrudCustomersFromPreferences grudCustomers = new GrudCustomersFromPreferences();
 
             mCustomers = grudCustomers.GetCustomersFromPreferences();
-          //  mCustomers = GetCustomersFromPreferences();
 
-            CustomAdapter adapter = new CustomAdapter(this, mCustomers); //, mInfoFromNewInoviceNotification, mInfoFromReadingNotification, mInfoFromOverdueNotification, mCutomersFromNotification);
+            CustomAdapter adapter = new CustomAdapter(this, mCustomers);
 
             mListView.Adapter = adapter;
-
-            //mHour.Text = GetUpdateHour();
-            //mDate.Text = GetUpdateDate();
 
             if(mCustomers.Count != 0)
             {
@@ -191,7 +181,7 @@ namespace ListViewTask
             return newDate;
         }
 
-        public static string GetUpdateHour()    /////bez static
+        public static string GetUpdateHour()    
         {
             // get shared preferences
             ISharedPreferences pref = Application.Context.GetSharedPreferences("PREFERENCE_NAME", FileCreationMode.Private);
@@ -398,7 +388,7 @@ namespace ListViewTask
             // Create a PendingIntent; 
             const int pendingIntentId = 3;
             PendingIntent pendingIntent =
-                PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
             // Instantiate the Inbox style:
             Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
@@ -484,7 +474,7 @@ namespace ListViewTask
                     }
                 }
 
-                int testNullResponse = 0;
+               // int testNullResponse = 0;
 
                 foreach (var item in mCustomers)
                 {
@@ -505,40 +495,40 @@ namespace ListViewTask
                     string billNumber = customer.Nomer.ToString();
                     string egn = customer.EGN.ToString();
 
-                    string realUrl = "http://192.168.2.222/VIKWebApi/" + "api/abonats/"
-                        + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
-                        + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
-
-                    mTempFetchCollection.Remove(customer);
+                    //string realUrl = "https://192.168.2.222/VIKWebApi/" + "api/abonats/"
+                    //    + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
+                    //    + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
 
                     // if(isAnyNotifycationCheck == true)
                     //   {
-                 
+
 
                     //CREATE test URL
-                     string url = "http://192.168.2.222/VIKWebApi/";
+                    // string url = "http://192.168.2.222/VIKWebApi/";
 
                     /// !!!!!!!!!!!!!!!!!!!!!!!!
-                    //string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/"
-                    //                 + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/";
-                    //               // + isReceiveNotifyNewInvoiceToday + "/" + isReceiveNotifyInvoiceOverdueToday + "/" + isReciveNotifyReadingToday + "/";
+                    string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/"
+                                     + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
+                                      + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
 
 
-                    //  var jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
+                    var jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
 
-                    string jsonResponse = string.Empty;
-                   
-                    if (testNullResponse >= 1)
-                    {
-                        jsonResponse = null;
-                    }
+                    mTempFetchCollection.Remove(customer);
 
-                    else
-                    {
-                        jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
-                    }
+                    //string jsonResponse = string.Empty;
+
+                    //if (testNullResponse >= 1)
+                    //{
+                    //    jsonResponse = null;
+                    //}
+
+                    //else
+                    //{
+                    //    jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
+                    //}
 
                     //check the api
                     if (jsonResponse == null)
@@ -580,7 +570,7 @@ namespace ListViewTask
 
                             mAllUpdateCustomerFromApi.Add(updateCutomerButNoNotify);     ////////////updateCutomerButNoNotify
 
-                            testNullResponse++;
+                            //testNullResponse++;
                             //mTempFetchCollection.Remove(customer);
 
                            // SaveUpdatesInPhone(pref, mDate.Text.ToString(), mHour.Text.ToString());
@@ -588,12 +578,14 @@ namespace ListViewTask
                              }
                             else
                             {
-                                RunOnUiThread(() =>
-                                {
-                                    RefreshProgressDialogAndToastWhenNoConnectioToApi();
-                                });
+                                mAllUpdateCustomerFromApi.Add(customer);
 
-                                 return;
+                                RunOnUiThread(() =>
+                                    {
+                                        RefreshProgressDialogAndToastWhenNoConnectioToApi();
+                                    });
+
+                                // return;
                             }
                         }
                         // }
@@ -655,7 +647,7 @@ namespace ListViewTask
                 // Create a PendingIntent; 
                 const int pendingIntentId = 0;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);   // OneShot
 
                 // Instantiate the Inbox style:
                 Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
@@ -707,7 +699,7 @@ namespace ListViewTask
                 // Create a PendingIntent; 
                 const int pendingIntentId = 1;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
 
                 // Instantiate the Inbox style:
@@ -758,7 +750,7 @@ namespace ListViewTask
                 // Create a PendingIntent; 
                 const int pendingIntentId = 2;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
 
                 // Instantiate the Inbox style:
