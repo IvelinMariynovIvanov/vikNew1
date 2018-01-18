@@ -27,8 +27,10 @@ namespace ListViewTask
     [Service(Exported = true, Permission = "android.permission.BIND_JOB_SERVICE")]
     public class MyJobService : Android.App.Job.JobService
     {
-        private List<Customer> mGetCustomersFromDbToNotify;  //only with 5 properties which are needed for sending to api
+        private List<Customer> mGetCustomersFromDbToNotify;  
         private List<Customer> mCustomers;
+
+        private List<Customer> mTempFetchCollection = new List<Customer>();
 
         private List<Customer> mCustomerFromApiToNotifyToday =  new List<Customer>();
         private List<Customer> mCountНotifyReadingustomers = new List<Customer>();
@@ -63,121 +65,7 @@ namespace ListViewTask
 
             thread.Start();
 
-            //isNeedUpdate = GetIsUpdated();
-
-            //isAlredyBeenUpdated = GetIsAlreadyBeenUpdated();
-
-            //isThereAnewCustomer = GetIsThereAneCustomer();
-
-            //string format = "HH";
-            //string currentTime = DateTime.Now.ToString(format);
-            //int currentTimeAsInt = Convert.ToInt32(currentTime);
-
-            //string dateFormat = "ddMMyyyy";
-            //string currentDate = DateTime.Now.ToString(dateFormat);
-            //int currentDateAsInt = Convert.ToInt32(currentDate);
-
-            //ISharedPreferences pref = Application.Context.GetSharedPreferences("PREFERENCE_NAME", FileCreationMode.Private);
-            //string lastUpdateDate = pref.GetString("Date", null);
-
-            ////if(lastUpdateDate == null)
-            ////{
-            ////    lastUpdateDate = DateTime.Now.ToShortDateString();
-            ////}
-
-            //var lastUpdateAsDate = Convert.ToDateTime(lastUpdateDate);
-            //string formatLastUpdate = lastUpdateAsDate.ToString(dateFormat);
-            //int lastUpdateAsInt = Convert.ToInt32(formatLastUpdate);
-
-            //if(currentTimeAsInt <= 10)  /// 9                   //currentDateAsInt
-            //{
-            //    isAlredyBeenUpdated = false;
-
-            //    ISharedPreferencesEditor editor = pref.Edit();
-
-            //    // convert the list to json
-            //    // var isUpdatedAsString = JsonConvert.SerializeObject(isNeedUpdate);
-
-            //    var isUpdatedAsString = JsonConvert.SerializeObject(isAlredyBeenUpdated);
-
-            //    // set the value to Customers key
-
-            //    editor.PutString("isAlredyBeenUpdated", isUpdatedAsString);
-
-            //    // commit the changes
-            //    editor.Commit();
-            //}
-
-            //if (currentTimeAsInt >= 10)     //10          // && isUpdated == false) // && currentTimeAsInt >= 23)   // do not receive at morning
-            //{
-            //    isNeedUpdate = false;
-
-            //    ISharedPreferencesEditor editor = pref.Edit();
-
-            //    // convert the list to json
-            //    var isUpdatedAsString = JsonConvert.SerializeObject(isNeedUpdate);
-
-            //    // set the value to Customers key
-
-            //    editor.PutString("isUpdated", isUpdatedAsString);
-
-            //    // commit the changes
-            //    editor.Commit();
-            //}
-
-            //if(isThereAnewCustomer == true)
-            //{
-            //    isNeedUpdate = false;
-            //    isAlredyBeenUpdated = false;
-
-            //}
-
-
-            ////if (isTHereANewCustomerToNotifyToday == true)
-            ////{
-            ////    isUpdated = false;
-            ////}
-
-            //bool doesStartAService = //(currentTimeAsInt >= 16 && currentDateAsInt >= lastUpdateAsInt);
-            //    (isNeedUpdate == false && currentTimeAsInt >= 10 && currentDateAsInt >= lastUpdateAsInt && isAlredyBeenUpdated == false); //  &&  && isThereAnewCustomer == false) ;//isTHereANewCustomerToNotifyToday == true);
-
-            //   if (doesStartAService == true) ///currentDateAsInt == )
-            //{
-            //    Thread thread = new Thread(AllJobsDoneInService);
-
-            //    thread.Start();
-
-            //    /// all true
-            //    //   isNeedUpdate = true;
-            //    isNeedUpdate = false;
-            //    isThereAnewCustomer = false;
-
-            //    isAlredyBeenUpdated = true;
-
-            //    foreach (var cust in mCustomers)
-            //    {
-            //        cust.DidGetAnyNotificationToday = true;
-            //    }
-
-
-            //    // save
-            //    ISharedPreferencesEditor editor = pref.Edit();
-
-            //    // convert the list to json
-            //    // var isUpdatedAsString = JsonConvert.SerializeObject(isNeedUpdate);
-            //    var isUpdatedAsString = JsonConvert.SerializeObject(isAlredyBeenUpdated);
-            //    string isThereAneCustomerAsString = JsonConvert.SerializeObject(isThereAnewCustomer);
-            //    // set the value to Customers key
-
-
-            //    editor.PutString("isUpdated", isUpdatedAsString);
-            //    editor.PutString("isAddedAnewCustomer", isThereAneCustomerAsString);
-            //    editor.PutString("isAlredyBeenUpdated", isNeedUpdate.ToString());
-            //    // commit the changes
-            //    editor.Commit();
-
-            //   return false;
-            //}
+          
 
             return false;
         }
@@ -285,8 +173,14 @@ namespace ListViewTask
             {
                 CheckIfThereisAnewMessageFromApi(connectToApi);
 
+                foreach (var item in mCustomers)
+                {
+                    mTempFetchCollection.Add(item);
+                }
+
                 foreach (var customer in mCustomers)
                 {
+
                     bool isReceiveNotifyNewInvoiceCheck = false;
                     bool isReceiveNotifyInvoiceOverdueCheck = false;
                     bool isReciveNotifyReadingCheck = false;
@@ -302,38 +196,34 @@ namespace ListViewTask
                     string crypFinalPass = encryp.Encrypt();
 
 
-                    // check if connection is ok
-                    //  if (isAnyNotifycationCheck == true)
-                    //   {
+
                     string billNumber = customer.Nomer;
                     string egn = customer.EGN;
 
-                    //CREATE URL
-                    // string url = "http://192.168.2.222/VIKWebApi/";
 
+                    string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/" + billNumber + "/" + egn + "/"
+                                   + ConnectToApi.updateByAutoService + "/"
+                                   + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
-                    /// !!!!!!!!!!!!!!!!!!!!! here
-                    //string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/" + billNumber + "/" + egn;
-
-                    //string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/" + billNumber + "/" + egn + "/"
-                    //               + ConnectToApi.updateByAutoService + "/"
-                    //               + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/"; 
-
-                    string realUrl = "http://192.168.2.222/VIKWebApi/" + "api/abonats/"
-                       + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
-                       + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
+                    //string realUrl = "http://192.168.2.222/VIKWebApi/" + "api/abonats/"
+                    //   + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
+                    //   + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
                     var jsonResponse = connectToApi.FetchApiDataAsync(realUrl); //FetchApiDataAsync(realUrl);
+
+                    mTempFetchCollection.Remove(customer);
+
 
                     //check the api
                     if (jsonResponse == null)
                     {
-                        return;
+                        mAllUpdateCustomerFromApi.Add(customer);
+
                     }
                     // check in vikSite is there a customer with this billNumber (is billNumber correct)
                     else if (jsonResponse == "[]")
                     {
-                        return;  ////
+                        mAllUpdateCustomerFromApi.Add(customer);
 
                     }
 
@@ -355,70 +245,26 @@ namespace ListViewTask
 
                         else
                         {
-                            return;
+                            mAllUpdateCustomerFromApi.Add(customer);
+                            //return;
                         }
                     }
 
-                    //string format = "HH";
-                    //string currentTime = DateTime.Now.ToString(format);
-                    //int currentTimeAsInt = Convert.ToInt32(currentTime);
-
-                    //   if(currentTimeAsInt == 17)
-                    //  {
-                    SelectWhichCustomersTobeNotified(mCountНotifyReadingustomers, mCountНotifyInvoiceOverdueCustomers, mCountNewНotifyNewInvoiceCustomers, mAllUpdateCustomerFromApi); // mCustomerFromApiToNotifyToday
-
-                    SaveCustomersFromApiInPhone();
-
-
-
-                    //Looper.Prepare();
-
-                    //MyNotification myNotification = new MyNotification(this);
-
-                    //myNotification.SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
-
-                    //if()
-                    SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
-
-                    SentNoficationForNewInovoice(mCountNewНotifyNewInvoiceCustomers);
-
-                    SentNotificationForReading(mCountНotifyReadingustomers);
-
-                    // SaveCustomersFromApiInPhone();
-                    //   }
-
-
-                    //else
-                    //{
-                    //    SelectWhichCustomersTobeNotified(mCountНotifyReadingustomers, mCountНotifyInvoiceOverdueCustomers, mCountNewНotifyNewInvoiceCustomers, mCustomerFromApiToNotifyToday);
-
-                    //  //  SaveCustomersFromApiInPhone();
-
-                    //    foreach (var customer in mCustomerFromApiToNotifyToday)
-                    //    {
-                    //        if(customer.NotifyNewInvoice == true && customer.ReceiveNotifyNewInvoiceToday && customer.DidGetNewInoviceToday == false)
-                    //        {
-                    //            SentNoficationForNewInovoice(mCountNewНotifyNewInvoiceCustomers);
-                    //        }
-                    //        else if(customer.NotifyInvoiceOverdue == true && customer.ReceiveNotifyInvoiceOverdueToday == true && customer.DidGetOverdueToday == false)
-                    //        {
-                    //            SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
-                    //        }
-                    //        else if(customer.NotifyReading == true && customer.ReciveNotifyReadingToday == true && customer.DidGetReadingToday == false)
-                    //        {
-                    //            SentNotificationForReading(mCountНotifyReadingustomers);
-                    //        }
-                    //    }
-
-                    //   // SaveCustomersFromApiInPhone();
-                    //}
-
                 }
-                //else
-                //{
-                //    return;  ////
-                //}
-                //  }
+
+                SelectWhichCustomersTobeNotified(mCountНotifyReadingustomers, mCountНotifyInvoiceOverdueCustomers, mCountNewНotifyNewInvoiceCustomers, mAllUpdateCustomerFromApi); // mCustomerFromApiToNotifyToday
+
+                SaveCustomersFromApiInPhone();
+
+
+
+                SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
+
+                SentNoficationForNewInovoice(mCountNewНotifyNewInvoiceCustomers);
+
+                SentNotificationForReading(mCountНotifyReadingustomers);
+
+            
             }
         }
 
@@ -479,7 +325,7 @@ namespace ListViewTask
             // Create a PendingIntent; 
             const int pendingIntentId = 3;
             PendingIntent pendingIntent =
-                PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
             // Instantiate the Inbox style:
             Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
@@ -629,15 +475,14 @@ namespace ListViewTask
         {
             if (countНotifyInvoiceOverdueCustomers.Count > 0)
             {
-                //string countНotifyInvoiceOverdueCustomersAsString = JsonConvert.SerializeObject(countНotifyInvoiceOverdueCustomers);
-
+   
                 // Set up an intent so that tapping the notifications returns to this app:
                 Intent intent = new Intent(this, typeof(MainActivity));
 
                 // Create a PendingIntent; 
                 const int pendingIntentId = 0;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
                 // Instantiate the Inbox style:
                 Notification.InboxStyle inboxStyle = new Notification.InboxStyle();
@@ -646,7 +491,7 @@ namespace ListViewTask
                 Notification.Builder bulideer = new Notification.Builder(this);
 
                 bulideer.SetContentIntent(pendingIntent);
-                 bulideer.SetSmallIcon(Resource.Drawable.vik);
+                bulideer.SetSmallIcon(Resource.Drawable.vik);
 
                 // Set the title and text of the notification:
                 bulideer.SetContentTitle("Просрочване");
@@ -664,17 +509,8 @@ namespace ListViewTask
 
                         bulideer.SetContentText($"Аб. номер: {cus.Nomer.ToString()}, {date}");
 
-                        //cus.DidGetOverdueToday = true;
-
-                        //Customer notifiedCustomer = mAllUpdateCustomerFromApi.FirstOrDefault(c => c.EGN == cus.EGN);
-                        //mAllUpdateCustomerFromApi.Remove(notifiedCustomer);
-
-                        //mAllUpdateCustomerFromApi.Add(cus);
-                  //  }
+                       
                 }
-
-                // save customers
-                
 
                 // Plug this style into the builder:
                 bulideer.SetStyle(inboxStyle);
@@ -704,7 +540,7 @@ namespace ListViewTask
                 // Create a PendingIntent; 
                 const int pendingIntentId = 1;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
 
                 // Instantiate the Inbox style:
@@ -761,7 +597,7 @@ namespace ListViewTask
                 // Create a PendingIntent; 
                 const int pendingIntentId = 2;
                 PendingIntent pendingIntent =
-                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.OneShot);
+                    PendingIntent.GetActivity(this, pendingIntentId, intent, PendingIntentFlags.CancelCurrent);
 
 
                 // Instantiate the Inbox style:
@@ -788,15 +624,6 @@ namespace ListViewTask
 
                         bulideer.SetContentText($"Аб. номер: {cus.Nomer.ToString()}, {date}");
 
-                        //cus.DidGetReadingToday = true;
-                        //cus.DidGetAnyNotificationToday = true;
-
-                        //Customer notifiedCustomer = mAllUpdateCustomerFromApi.FirstOrDefault(c => c.EGN == cus.EGN);
-                        //mAllUpdateCustomerFromApi.Remove(notifiedCustomer);
-
-                        //mAllUpdateCustomerFromApi.Add(cus);
-                   // }
-
                 }
 
                 //SaveCustomersFromApiInPhone(mAllUpdateCustomerFromApi);
@@ -814,22 +641,6 @@ namespace ListViewTask
                 // Publish the notification:
                 const int notificationIdd = 2;
                 notificationManager1.Notify(notificationIdd, notification11);
-
-             //   ///// saveeeee
-             //   ISharedPreferences pref =
-             //Application.Context.GetSharedPreferences("PREFERENCE_NAME", FileCreationMode.Private);
-
-             //   // convert the list to json
-             //   var listOfCustomersAsJson = JsonConvert.SerializeObject(mAllUpdateCustomerFromApi); // mCustomers
-
-             //   ISharedPreferencesEditor editor = pref.Edit();
-
-             //   // set the value to Customers key
-             //   editor.PutString("Customers", listOfCustomersAsJson);
-
-
-             //   // commit the changes
-             //   editor.Commit();
 
             }
         }
@@ -856,25 +667,7 @@ namespace ListViewTask
             return listOfCustomers;
         }
 
-        //private Message GetmessageFromPreferencesInPhone()
-        //{
-        //    // get shared preferences
-        //    ISharedPreferences pref = Application.Context.GetSharedPreferences("PREFERENCE_NAME", FileCreationMode.Private);
-
-        //    // read exisiting value
-        //    var messageAsString = pref.GetString("MessageFromApi", null);
-
-        //    // if preferences return null, initialize listOfCustomers
-        //    if (messageAsString == null)
-        //        return new Message();
-
-        //    var message = JsonConvert.DeserializeObject<Message>(messageAsString);
-
-        //    if (message == null)
-        //        return new Message();
-
-        //    return message;
-        //}
+ 
 
         public List<Customer> CheckOverdue(List<Customer> abonatiList)
         {

@@ -14,6 +14,9 @@ using Android.Widget;
 
 namespace ListViewTask
 {
+   
+
+
     public class OnEditCustomerEventArgs :EventArgs
     {
         private bool isThereANewCharge;
@@ -347,11 +350,7 @@ namespace ListViewTask
                 OnEditCustomerComplete.Invoke
                (this, new OnEditCustomerEventArgs(mIsNewCharge, mIsLateCharge, mIsReport, mCurrentPosition));
             }
-            else
-            {
 
-            }
-           
             this.Dismiss();
         }
 

@@ -27,14 +27,18 @@ namespace ListViewTask
         private List<Customer> countНotifyInvoiceOverdueCustomers = new List<Customer>();
         private List<Customer> countNewНotifyNewInvoiceCustomers = new List<Customer>();
         private List<Customer> mCustomerFromApi = new List<Customer>();
+
        
+
+
 
         public CustomAdapter(Context mContex, List<Customer> mCustomers) 
         {
-            //Thread.CurrentThread.CurrentCulture = new CultureInfo("bg-BG");
+            
 
             this._customers = mCustomers;
             this._mContex = mContex;
+  
         }
 
         public override Customer this[int position]
@@ -108,38 +112,11 @@ namespace ListViewTask
                     holder.MoneyToP.SetTextColor(Color.ForestGreen);
                 }
 
-                #region InflatingControls
-                    //row = LayoutInflater.From(_mContex).Inflate(Resource.Layout.RowView3, null, false);
-                    //holder.BillNum = row.FindViewById<TextView>(Resource.Id.BillNumber);  // reference listview_row by  android:id="@+id/textName"
-                    //holder.FullName = row.FindViewById<TextView>(Resource.Id.FullName);
-                    //holder.MoneyToP = row.FindViewById<TextView>(Resource.Id.txtMonetToPayInDecimal);
-                    //holder.OldB = row.FindViewById<TextView>(Resource.Id.tOldBillInDecimal);
-                    //holder.Address = row.FindViewById<TextView>(Resource.Id.Address);
-                    //holder.EndDate = row.FindViewById<TextView>(Resource.Id.endDateValue);
-                    //holder.ReportDate = row.FindViewById<TextView>(Resource.Id.reportDateValue);
-                    //holder.ReportHour = row.FindViewById<TextView>(Resource.Id.reportHourValue);
-
-                    //holder.Edit = row.FindViewById<Button>(Resource.Id.EditImg);
-                    //holder.Delete = row.FindViewById<Button>(Resource.Id.DeleteImg);
-
-                    //holder.BillNum.Text = _customers[position].Nomer;
-                    //holder.FullName.Text = _customers[position].FullName;
-                    //holder.MoneyToP.Text = _customers[position].MoneyToPay;
-                    //holder.OldB.Text = _customers[position].OldBill;
-
-                    //holder.Address.Text = _customers[position].Address;
-                    //holder.EndDate.Text = _customers[position].EndDate;
-                    //holder.ReportDate.Text = _customers[position].ReportDate;
-                    //holder.ReportHour.Text = _customers[position].ReportHour;
-
-                    //holder.NewCharge = _customers[position].НotifyNewInvoice;
-                    //holder.LateBil = _customers[position].НotifyInvoiceOverdue;
-                    //holder.Report = _customers[position].НotifyReading;
-                    #endregion
-
+  
                     holder.Delete.Click += (object sender, EventArgs e) =>
                 {
                     DeleteCurrentCustomer(position, holder);
+          
                 };
 
                 holder.Edit.Click += (object sender, EventArgs e) =>
@@ -151,9 +128,13 @@ namespace ListViewTask
             return row;
         }
 
+
         private View InfateControls(int position, ViewHolder holder)
         {
             View row = LayoutInflater.From(_mContex).Inflate(Resource.Layout.RowView4, null, false);
+
+          //  mAbonati = row.FindViewById<TextView>(Resource.Id.Customers);
+
             holder.BillNum = row.FindViewById<TextView>(Resource.Id.BillNumber);  
             holder.FullName = row.FindViewById<TextView>(Resource.Id.FullName);
             holder.MoneyToP = row.FindViewById<TextView>(Resource.Id.txtMonetToPayInDecimal);
@@ -200,6 +181,10 @@ namespace ListViewTask
 
             return row;
         }
+        //private void Holder_OnDeleteCustomer(object sender, OnDeleteCustomerEventArgs e)
+        //{
+            
+        //}
 
         private void EditCurrentCustomer(int position, ViewHolder holder)
         {
@@ -223,7 +208,7 @@ namespace ListViewTask
                 //countNewНotifyNewInvoiceCustomers = GetCountNewНotifyNewInvoiceCustomers();
                 //countНotifyInvoiceOverdueCustomers = GetCountНotifyInvoiceOverdueCustomers();
                 // mCustomerFromApi = GetCustomersFromApi();
-
+                
                 holder.NewCharge = e1.IsThereANewCharge;
                 holder.LateBil = e1.IsThereALateBill;
                 holder.Report = e1.IsThereAReport;
@@ -295,6 +280,7 @@ namespace ListViewTask
                 Android.Widget.Toast.MakeText(_mContex, "Изтриване  " + rowName, Android.Widget.ToastLength.Long).Show();
 
                 _customers.RemoveAt(position);
+
                 NotifyDataSetChanged();
 
                 // save new list of customers without deleted one
@@ -304,13 +290,6 @@ namespace ListViewTask
 
                 editor.Commit();
 
-                /////////////
-                //if(_customers.Count == 0)
-                //{
-                //    var intent = new Intent();
-
-                //    this.StartActivity(intent);
-                //}
 
             });
 

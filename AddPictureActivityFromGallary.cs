@@ -124,14 +124,7 @@ namespace ListViewTask
             sent.Click += Sent_Click;
 
             #region Make sent button invisible
-            // MakeVisibleSentButton();
-
-            //  sent.Visibility = ViewStates.Invisible;
-
-            //mAddress.TextChanged += MAddress_TextChanged;
-            //mCity.TextChanged += MCity_TextChanged;
-            //mDescription.TextChanged += MDescription_TextChanged;
-            //mPhoneNumber.TextChanged += MPhoneNumber_TextChanged;
+         
 #endregion
 
         }
@@ -199,13 +192,6 @@ namespace ListViewTask
             {
                 if (resultCode == Result.Ok)
                 {
-
-                    //Stream stream = ContentResolver.OpenInputStream(data.Data);  // data parameter from method
-                    //Bitmap bitmap = BitmapFactory.DecodeStream(stream);
-                    // pic = FindViewById<ImageView>(Resource.Id.imageView2);
-                    //pic.SetImageBitmap(bitmap);
-
-                    //  pic = FindViewById<ImageView>(Resource.Id.imageView2);
                     pic = FindViewById<ImageView>(Resource.Id.imageView1);
                     pic.SetImageURI(data.Data);
 
@@ -247,6 +233,7 @@ namespace ListViewTask
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.basic_menu, menu);
+
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -296,7 +283,10 @@ namespace ListViewTask
             mError.Text = string.Empty;
             mError.Visibility = ViewStates.Invisible;
 
-            RunOnUiThread(() => { ShowProgressDialog(); });
+            RunOnUiThread(() => 
+            {
+                ShowProgressDialog();
+            });
 
             // SentAccindentSignelToApi();
 
@@ -317,19 +307,7 @@ namespace ListViewTask
                          && mPhoneNumber.Text.Trim().Length > 0
                          && mFullName.Text.Trim().Length >0)
             {
-                #region old stuff
-                //// casting imageview to bitmap
-                //Android.Graphics.Drawables.BitmapDrawable bd =
-                //    (Android.Graphics.Drawables.BitmapDrawable)pic.Drawable;
-
-                //Android.Graphics.Bitmap bitmap = bd.Bitmap;
-
-                //using (var stream = new MemoryStream())
-                //{
-                //    bitmap.Compress(Bitmap.CompressFormat.Jpeg, 0, stream);
-                //    PostItem(stream);
-                //}
-                #endregion
+                
                 if(connection == true)
                 {
                     if (mSaveImageUri != null)
@@ -342,10 +320,7 @@ namespace ListViewTask
                         Stream stream = null;
                         PostAccidentToDB(stream);
                     }
-                    //else
-                    //{
-                    //    PostAccidentToDBwithoutImage();
-                    //}
+                    
                 }
                 else
                 {
@@ -357,7 +332,6 @@ namespace ListViewTask
                 progress.Dismiss();
 
                 Looper.Prepare();
-                //Toast.MakeText(this, "Попълнете полетата", ToastLength.Long);
 
                 RunOnUiThread(() => { UpdateError(); });
             }
@@ -431,12 +405,7 @@ namespace ListViewTask
                 }
                 catch (Exception ex)
                 {
-                    //string error =(ex.InnerException.Message);
-
-                    //String innerMessage = (ex.InnerException != null)
-                    //    ? ex.InnerException.Message
-                    //    : "";
-
+                   
                     RunOnUiThread(() => { RefreshProgressDialogAndToastWhenCanNotSentSignalWithOutImage(); });
                 }
             }
