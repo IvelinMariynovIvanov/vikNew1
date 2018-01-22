@@ -21,8 +21,7 @@ namespace ListViewTask
        
         public string Encrypt()
         {
-           // EncrypConnection encryp = new EncrypConnection();
-
+         
             GeneratePassword pass = new GeneratePassword();
 
             string model;
@@ -32,7 +31,6 @@ namespace ListViewTask
             dateTimeTikcs = pass.GetDateTimeTiks();
 
             string finalPass = pass.secretPass + model + dateTimeTikcs;
-           // string crypFinalPass = Encrypt(finalPass);
 
             Guid MyGUID = new Guid("D985A92A-4B06-43AD-8620-8C41D5C85377");
 

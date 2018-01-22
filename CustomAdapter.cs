@@ -78,15 +78,9 @@ namespace ListViewTask
             if (holder == null)
             {
                 holder = new ViewHolder();
+
                 // if row is empty create row
-
-                #region newLook
-
-                row = InfateControls(position, holder);
-
-                #endregion
-
-               // holder.MoneyToP.SetTextColor(Color.ForestGreen);
+                row = InflateControls(position, holder);
 
                 if (holder.ReceiveNotifyInvoiceOverdueToday == true ) 
                 {
@@ -129,7 +123,7 @@ namespace ListViewTask
         }
 
 
-        private View InfateControls(int position, ViewHolder holder)
+        private View InflateControls(int position, ViewHolder holder)
         {
             View row = LayoutInflater.From(_mContex).Inflate(Resource.Layout.RowView4, null, false);
 
@@ -180,15 +174,14 @@ namespace ListViewTask
             holder.Report = _customers[position].NotifyReading;
 
             return row;
-        }
-        //private void Holder_OnDeleteCustomer(object sender, OnDeleteCustomerEventArgs e)
-        //{
-            
-        //}
+        }   
 
         private void EditCurrentCustomer(int position, ViewHolder holder)
         {
             string rowName = holder.FullName.Text;
+            //// 
+            //Need this for possitive button event
+            //
 
             //AlertDialog.Builder alertDialog = new AlertDialog.Builder(_mContex);
             //alertDialog.SetTitle("Потвърждавате ли редакцията ? ");
@@ -204,11 +197,7 @@ namespace ListViewTask
 
             editFragmentDialog.OnEditCustomerComplete += (object sender1, OnEditCustomerEventArgs e1) =>
             {
-                //countНotifyReadingustomers = GetNotifyReadingCustomers();
-                //countNewНotifyNewInvoiceCustomers = GetCountNewНotifyNewInvoiceCustomers();
-                //countНotifyInvoiceOverdueCustomers = GetCountНotifyInvoiceOverdueCustomers();
-                // mCustomerFromApi = GetCustomersFromApi();
-                
+                             
                 holder.NewCharge = e1.IsThereANewCharge;
                 holder.LateBil = e1.IsThereALateBill;
                 holder.Report = e1.IsThereAReport;
@@ -243,11 +232,13 @@ namespace ListViewTask
                 editor.Commit();
             };
 
+            //// 
+            //Need this for possitive button event
+            //
+
             //alertDialog.SetPositiveButton("Да", delegate
             //{
             //    Android.Widget.Toast.MakeText(_mContex, "Редактиране  " + rowName, Android.Widget.ToastLength.Long).Show();
-
-
 
             //});
 
@@ -258,7 +249,7 @@ namespace ListViewTask
 
             // alertDialog.Show();
         }
-       
+
         private void DeleteCurrentCustomer(int position, ViewHolder holder)
         {
             var rowName = holder.FullName.Text;

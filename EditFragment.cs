@@ -16,8 +16,8 @@ namespace ListViewTask
 {
    
 
-
-    public class OnEditCustomerEventArgs :EventArgs
+    // My custom Event  class
+    public class OnEditCustomerEventArgs : EventArgs
     {
         private bool isThereANewCharge;
         private bool isThereALateBill;
@@ -170,6 +170,7 @@ namespace ListViewTask
             }
            
         }
+
         // here i save info in fileds to handle the rotation 
         public override void OnSaveInstanceState(Bundle outState)
         {

@@ -55,7 +55,7 @@ namespace ListViewTask
             return false;
         }
 
-        public override bool OnStartJob(JobParameters args) // JobParameters @params
+        public override bool OnStartJob(JobParameters args) 
         {
             CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("bg-BG");
 
@@ -64,8 +64,6 @@ namespace ListViewTask
             Thread thread = new Thread(AllJobsDoneInService);
 
             thread.Start();
-
-          
 
             return false;
         }
@@ -167,8 +165,7 @@ namespace ListViewTask
 
             bool connection = connectToApi.CheckConnectionOfVikSite();
 
-            // if (mCustomers.Count > 0)
-            //  {
+           
             if (connection == true)
             {
                 CheckIfThereisAnewMessageFromApi(connectToApi);
@@ -233,7 +230,6 @@ namespace ListViewTask
                         Customer updateCutomerButNoNotify = connectToApi.GetCustomerFromApi(jsonResponse);
 
                         if (updateCutomerButNoNotify != null && updateCutomerButNoNotify.IsExisting == true)
-                        //  (newCustomer != null && newCustomer.IsExisting == true)
                         {
 
                             updateCutomerButNoNotify.NotifyNewInvoice = customer.NotifyNewInvoice;
@@ -246,7 +242,7 @@ namespace ListViewTask
                         else
                         {
                             mAllUpdateCustomerFromApi.Add(customer);
-                            //return;
+                           
                         }
                     }
 
@@ -255,8 +251,6 @@ namespace ListViewTask
                 SelectWhichCustomersTobeNotified(mCountНotifyReadingustomers, mCountНotifyInvoiceOverdueCustomers, mCountNewНotifyNewInvoiceCustomers, mAllUpdateCustomerFromApi); // mCustomerFromApiToNotifyToday
 
                 SaveCustomersFromApiInPhone();
-
-
 
                 SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
 
@@ -280,11 +274,11 @@ namespace ListViewTask
 
             int lastMessageId = grudMessage.GetMessageFromPreferencesInPhone().MessageID;
 
-            //realno !!!!!!!!!!!!!
+            //real 
             string messageUrl = ConnectToApi.urlAPI + "api/msg/";
 
-            ///testovo
-        //    string messageUrl = ConnectToApi.wtf + "api/msg/";
+            ///test
+            //string messageUrl = ConnectToApi.wtf + "api/msg/";
 
             string finalUrl = messageUrl + crypFinalPass + "/" + lastMessageId;
 
@@ -300,8 +294,6 @@ namespace ListViewTask
                 if (newMessage.MessageID > lastMessageId)
                 {
                     grudMessage.SaveMessageInPhone(newMessage);
-
-                    //   SaveMessageInPhone(newMessage);
 
                     int messagesCount = newMessage.Messages.Count;
 
@@ -395,7 +387,11 @@ namespace ListViewTask
         public static void SelectWhichCustomersTobeNotified(List<Customer> countНotifyReadingustomers, List<Customer> countНotifyInvoiceOverdueCustomers, List<Customer> countNewНotifyNewInvoiceCustomers, List<Customer> mAllUpdateCustomerFromApi) // mCustomerFromApiToTotifyToday
         {
             foreach (var customer in mAllUpdateCustomerFromApi) // mCustomerFromApiToTotifyToday
-            {
+            {   
+                ///
+                /// Need this to refresh notifications
+                /// 
+
                 //customer.ReceiveNotifyInvoiceOverdueToday = true;
                 //customer.ReceiveNotifyNewInvoiceToday = true;
                 //customer.ReciveNotifyReadingToday = true;
@@ -408,16 +404,16 @@ namespace ListViewTask
                 if (isAnyNotifycationCheck == true)
                 {
 
-                    if (customer.NotifyNewInvoice == true && customer.ReceiveNotifyNewInvoiceToday) // && customer.DidGetNewInoviceToday == false)              /// bez poslednata proverka
+                    if (customer.NotifyNewInvoice == true && customer.ReceiveNotifyNewInvoiceToday) 
                     {
 
                        countNewНotifyNewInvoiceCustomers.Add(customer);
                     }
-                    if (customer.NotifyInvoiceOverdue == true && customer.ReceiveNotifyInvoiceOverdueToday)        /// bez poslednata proverka
+                    if (customer.NotifyInvoiceOverdue == true && customer.ReceiveNotifyInvoiceOverdueToday)       
                     {
                         countНotifyInvoiceOverdueCustomers.Add(customer);
                     }
-                    if (customer.NotifyReading == true && customer.ReciveNotifyReadingToday)           /// bez poslednata proverka
+                    if (customer.NotifyReading == true && customer.ReciveNotifyReadingToday)           
                     {
                         countНotifyReadingustomers.Add(customer);
                     }
@@ -498,18 +494,14 @@ namespace ListViewTask
 
                 foreach (var cus in countНotifyInvoiceOverdueCustomers)
                 {
-                    // Generate a message summary for the body of the notification:
 
-                  //  if(cus.DidGetOverdueToday == false)
-                  //  {
                         string format = "dd.MM.yyyy";
                         string date = cus.EndPayDate.ToString(format);
 
                         inboxStyle.AddLine($"Аб. номер: {cus.Nomer.ToString()}, {date}");
 
                         bulideer.SetContentText($"Аб. номер: {cus.Nomer.ToString()}, {date}");
-
-                       
+                      
                 }
 
                 // Plug this style into the builder:
@@ -557,19 +549,13 @@ namespace ListViewTask
                 //  bulideer.SetContentText("chimchim@xamarin.com");
 
                 foreach (var item in countNewНotifyNewInvoiceCustomers)
-                {
-                    // Generate a message summary for the body of the notification:
-                
-                  //  if(item.DidGetNewInoviceToday == false)
-                  //  {
+                {                   
                         string money = item.MoneyToPay.ToString("C", System.Globalization.CultureInfo.GetCultureInfo("bg-BG"));
 
                         inboxStyle.AddLine($"Аб. номер: {item.Nomer.ToString()}, {money}");
 
                         bulideer.SetContentText($"Аб. номер: {item.Nomer.ToString()}, {money}");
-
-                       // item.DidGetNewInoviceToday = true;
-                  //  }
+                
                 }
                 // Plug this style into the builder:
                 bulideer.SetStyle(inboxStyle);
@@ -614,8 +600,7 @@ namespace ListViewTask
 
                 foreach (var cus in countНotifyReadingustomers)
                 {
-                  // if(cus.DidGetReadingToday == false)
-                 //   {
+                
                         // Generate a message summary for the body of the notification:
                         string format = "dd.MM.yyyy";
                         string date = cus.StartReportDate.ToString(format);
@@ -625,8 +610,6 @@ namespace ListViewTask
                         bulideer.SetContentText($"Аб. номер: {cus.Nomer.ToString()}, {date}");
 
                 }
-
-                //SaveCustomersFromApiInPhone(mAllUpdateCustomerFromApi);
 
                 // Plug this style into the builder:
                 bulideer.SetStyle(inboxStyle);
@@ -665,37 +648,6 @@ namespace ListViewTask
                 return new List<Customer>();
 
             return listOfCustomers;
-        }
-
- 
-
-        public List<Customer> CheckOverdue(List<Customer> abonatiList)
-        {
-            HttpClientHandler handler = new HttpClientHandler();
-
-            var client = new System.Net.Http.HttpClient(handler, false);
-
-            string json = JsonConvert.SerializeObject(abonatiList);
-            StringContent data = new StringContent("=" + json, Encoding.UTF8, "application/x-www-form-urlencoded");
-
-            HttpResponseMessage response = client.PostAsync("http://192.168.2.222/VIKWebApi/api/CheckOverdue/", data).Result;
-
-            string result = response.Content.ReadAsStringAsync().Result;
-
-            List<Customer> abonatiListReturn = new List<Customer>(); // long ???
-
-            //   JsonConvert.PopulateObject(result, abonatiListReturn);
-
-            string res = result.ToString();  // ??? result  // ?? res
-
-            // mGetCheckedOverdueCustomrsFromApiAsString = result;
-            //mCustomersShort = abonatiListReturn;
-
-            //   return abonatiListReturn;
-
-            //     abonatiListReturn = JsonConvert.DeserializeObject<List<Customer>>(res);
-
-            return abonatiListReturn;
         }
 
     }

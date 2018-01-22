@@ -104,10 +104,7 @@ namespace ListViewTask
             base.OnStop();
         }
 
-        public override void OnBackPressed()
-        {
-            //base.OnBackPressed();
-        }
+
 
         private  void StartService() 
         {
@@ -244,12 +241,6 @@ namespace ListViewTask
                 var intent = new Intent(this, typeof(AddPictureActivityFromGallary));
                 StartActivity(intent);
 
-                //View view = FindViewById(Resource.Id.menu_addPicture);  // This is the Id of menu item in Toolbar
-                //PopupMenu popUpMenu = new PopupMenu(this, view);
-
-                //popUpMenu.Inflate(Resource.Menu.pop_up_menu);
-                //popUpMenu.Show();
-
                 return true;
             }
 
@@ -281,7 +272,7 @@ namespace ListViewTask
 
                 return true;
             }
-
+            /// Need this to test how many jobs / services are active
             //else if (id == Resource.Id.menu_moreOptions)
             //{
             //    string s = string.Empty;
@@ -305,17 +296,6 @@ namespace ListViewTask
 
                 return true;
             }
- 
-            //else if (id == Resource.Id.menu_GetPhoneNumber)
-            //{
-            //    mTelephonyMgr =
-            // (Android.Telephony.TelephonyManager)this.GetSystemService(Android.Content.Context.TelephonyService);
-            //    mPhoneNumber = mTelephonyMgr.Line1Number;
-
-            //    Toast.MakeText(this, $"The phone number is {mPhoneNumber}", ToastLength.Long).Show();
-
-            //    return true;
-            //}
 
             return base.OnOptionsItemSelected(item);
         }
@@ -354,11 +334,6 @@ namespace ListViewTask
             {
                 RunOnUiThread(() => RefreshProgressDialogAndToatWhenThereIsNoCustomers());
 
-                ///////
-
-                
-
-                return;
             }
             else if (customers.Count != 0) 
             {
@@ -368,7 +343,7 @@ namespace ListViewTask
 
         private void RefreshProgressDialogAndToatWhenThereIsNoCustomers()
         {
-            ////////////////////
+            
             mHour.Visibility = ViewStates.Gone;
             mDate.Visibility = ViewStates.Gone;
             mObnoveniKum.Visibility = ViewStates.Gone;
@@ -380,8 +355,7 @@ namespace ListViewTask
         }
         private void SentNotificationWithoutSubscribe(Message newMessage)
         {
-            // string countНotifyInvoiceOverdueCustomersAsString = JsonConvert.SerializeObject(countНotifyInvoiceOverdueCustomers);
-
+ 
             // Set up an intent so that tapping the notifications returns to this app:
             Intent intent = new Intent(this, typeof(MainActivity));
 
@@ -434,7 +408,6 @@ namespace ListViewTask
 
                 EncrypConnection encryp = new EncrypConnection();
 
-               
 
                 string crypFinalPass = encryp.Encrypt();
 
@@ -443,12 +416,7 @@ namespace ListViewTask
 
                 int lastMessageId = grudMessage.GetMessageFromPreferencesInPhone().MessageID;
 
-
-                //realno !!!!!!!!!!!!!!
                 string messageUrl = ConnectToApi.urlAPI +"api/msg/";
-
-                ///teest
-              //  string messageUrl = "http://192.168.2.222/VIKWebApi/api/msg/";
 
                 string finalUrl = messageUrl + crypFinalPass + "/" + lastMessageId;
 
@@ -469,7 +437,6 @@ namespace ListViewTask
                         if (messagesCount > 0)
                         {
                              SentNotificationWithoutSubscribe(newMessage);
-                          //  myNotification.SentNotificationWithoutSubscribe(newMessage);
                         }
                     }
                 }
@@ -495,28 +462,26 @@ namespace ListViewTask
                     string billNumber = customer.Nomer.ToString();
                     string egn = customer.EGN.ToString();
 
+
+                    /// url for test api
                     //string realUrl = "https://192.168.2.222/VIKWebApi/" + "api/abonats/"
                     //    + crypFinalPass + "/" + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
                     //    + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
 
-                    // if(isAnyNotifycationCheck == true)
-                    //   {
-
-
-                    //CREATE test URL
-                    // string url = "http://192.168.2.222/VIKWebApi/";
-
-                    /// !!!!!!!!!!!!!!!!!!!!!!!!
+                    /// real url api
                     string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/"
                                      + billNumber + "/" + egn + "/" + ConnectToApi.updateByButtonRefresh + "/"
                                       + isReceiveNotifyNewInvoiceCheck + "/" + isReceiveNotifyInvoiceOverdueCheck + "/" + isReciveNotifyReadingCheck + "/";
 
 
-
                     var jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
 
                     mTempFetchCollection.Remove(customer);
+
+                    ///
+                    // Need this to test the response
+                    ///
 
                     //string jsonResponse = string.Empty;
 
@@ -530,7 +495,7 @@ namespace ListViewTask
                     //    jsonResponse = connectToApi.FetchApiDataAsync(realUrl);
                     //}
 
-                    //check the api
+                    //check the api response
                     if (jsonResponse == null)
                         {
                             RunOnUiThread(() => RefreshProgressDialogAndToastWhenNoConnectioToApi());
@@ -538,8 +503,6 @@ namespace ListViewTask
                         //  mAllUpdateCustomerFromApi.AddRange(mTempFetchCollection);
 
                             mAllUpdateCustomerFromApi.Add(customer);
-
-                           // return;
                         }
 
                         // check in vikSite is there a customer with this billNumber (is billNumber correct)
@@ -548,19 +511,15 @@ namespace ListViewTask
                             RefreshProgressDialogAndToastWhenInputIsNotValid();
 
                             mAllUpdateCustomerFromApi.Add(customer);
-                        // return;
                         }
 
                         // check is billNumber correct and get and save customer in phone
                         else if (jsonResponse != null)
                         {
-                        // var jsonArray = JArray.Parse(jsonResponse);
 
-                        // Customer newCustomer = connectToApi.GetCustomerFromApi(jsonResponse);
                         Customer updateCutomerButNoNotify = connectToApi.GetCustomerFromApi(jsonResponse);
 
                         if (updateCutomerButNoNotify != null && updateCutomerButNoNotify.IsExisting == true)
-                          //  (newCustomer != null && newCustomer.IsExisting == true)
                             {
                            
                             updateCutomerButNoNotify.NotifyNewInvoice = customer.NotifyNewInvoice;
@@ -570,9 +529,12 @@ namespace ListViewTask
 
                             mAllUpdateCustomerFromApi.Add(updateCutomerButNoNotify);     ////////////updateCutomerButNoNotify
 
+                            ///
+                            // Need this to test the response
+                            ///
+
                             //testNullResponse++;
                             //mTempFetchCollection.Remove(customer);
-
                            // SaveUpdatesInPhone(pref, mDate.Text.ToString(), mHour.Text.ToString());
 
                              }
@@ -584,11 +546,8 @@ namespace ListViewTask
                                     {
                                         RefreshProgressDialogAndToastWhenNoConnectioToApi();
                                     });
-
-                                // return;
                             }
-                        }
-                        // }
+                        }                  
                     }
 
                     #region setting the updating date
@@ -609,12 +568,6 @@ namespace ListViewTask
                     SelectWhichCustomersTobeNotified(countНotifyReadingustomers, countНotifyInvoiceOverdueCustomers, countNewНotifyNewInvoiceCustomers, mAllUpdateCustomerFromApi); //mCustomerFromApiToNotifyToday
 
                     SaveUpdatesInPhone(pref, mDate.Text.ToString(), mHour.Text.ToString());
-
-                   
-
-                //MyNotification myNotification = new MyNotification(this);
-
-                //myNotification.SentNotificationForOverdue(mCountНotifyInvoiceOverdueCustomers);
 
                     SentNoficationForNewInovoice(countNewНotifyNewInvoiceCustomers);
 
@@ -819,6 +772,10 @@ namespace ListViewTask
         {
             foreach (var customer in mAllUpdateCustomerFromApi)   //// mCustomerFromApiToNotifyToday
             {
+                ////
+                // Need this propeties set to true for testing Notifications
+                ///
+
                 //customer.ReceiveNotifyInvoiceOverdueToday = true;
                 //customer.ReceiveNotifyNewInvoiceToday = true;
                 //customer.ReciveNotifyReadingToday = true;
@@ -834,24 +791,25 @@ namespace ListViewTask
     
                     if (customer.ReceiveNotifyNewInvoiceToday == true && customer.NotifyNewInvoice == true)
                     {
-                       // customer.ReceiveNotifyNewInvoiceToday = false;
-
                         countNewНotifyNewInvoiceCustomers.Add(customer);
                     }
                     if (customer.ReceiveNotifyInvoiceOverdueToday == true && customer.NotifyInvoiceOverdue == true)
                     {
-                        //customer.ReceiveNotifyInvoiceOverdueToday = false;
-
+                      
                         countНotifyInvoiceOverdueCustomers.Add(customer);
                     }
                     if (customer.ReciveNotifyReadingToday == true && customer.NotifyReading == true)
                     {
-                       // customer.ReciveNotifyReadingToday = false;
-
+                    
                         countНotifyReadingustomers.Add(customer);
                     }
                 }
             }
+        }
+
+        public override void OnBackPressed()
+        {
+
         }
 
         private void GetFinalUpdateDateHour()
@@ -870,12 +828,8 @@ namespace ListViewTask
 
             string shortReportDatetHour = updateHourAndDate.ToString(DateFormatt);
 
-            updateHour = updateHourAndDate.ToShortTimeString();  // + " часа, ";
+            updateHour = updateHourAndDate.ToShortTimeString();  
             updateDate = updateHourAndDate.ToString(format);
-            //mHour.Text = updateHour;
-            //mDate.Text = updateDate;
-
-           // bool isUpdated = true;
 
             // convert the list to json
             var listOfCustomersAsJson = JsonConvert.SerializeObject(mAllUpdateCustomerFromApi);  

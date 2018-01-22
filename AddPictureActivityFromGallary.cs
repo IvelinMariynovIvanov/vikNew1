@@ -123,9 +123,6 @@ namespace ListViewTask
             sent.Visibility = ViewStates.Visible;
             sent.Click += Sent_Click;
 
-            #region Make sent button invisible
-         
-#endregion
 
         }
 
@@ -187,7 +184,7 @@ namespace ListViewTask
         {
             base.OnActivityResult(requestCode, resultCode, data);
 
-            //from gallery
+            //take pic from gallery
             if (mIsFromGalleryPressed)
             {
                 if (resultCode == Result.Ok)
@@ -202,7 +199,7 @@ namespace ListViewTask
                 }
                 
             }
-            //from camera
+            //take pic from camera
             else
             {
                 Intent mediaScanIntent = new Intent(Intent.ActionMediaScannerScanFile);
@@ -288,9 +285,8 @@ namespace ListViewTask
                 ShowProgressDialog();
             });
 
-            // SentAccindentSignelToApi();
-
             Thread thread = new Thread(SentAccindentSignelToApi);
+
             thread.Start();
 
         }
@@ -310,11 +306,13 @@ namespace ListViewTask
                 
                 if(connection == true)
                 {
+                    // sent with a pic
                     if (mSaveImageUri != null)
                     {
                         Stream stream = ContentResolver.OpenInputStream(mSaveImageUri);
                         PostAccidentToDB(stream);
                     }
+                    // sent without a pic
                     else
                     {
                         Stream stream = null;
@@ -359,10 +357,6 @@ namespace ListViewTask
 
             HttpClientHandler handler = new HttpClientHandler();
 
-        //    CookieContainer cookies = new CookieContainer();
-
-         //   handler.CookieContainer = cookies;
-
             var client = new System.Net.Http.HttpClient(handler, false);
             {
                 try
@@ -378,8 +372,7 @@ namespace ListViewTask
                     StringContent city = new StringContent(mCity.Text.ToString());
                     StringContent address = new StringContent(mAddress.Text.ToString());
                     StringContent name = new StringContent(mFullName.Text.ToString());
-                    StringContent key = new StringContent(mFinalCryptPassword);
-                   // StringContent key = new StringContent("test");
+                    StringContent key = new StringContent(mFinalCryptPassword);              
 
                     form.Add(number, "number");
                     form.Add(description, "description");
@@ -395,9 +388,7 @@ namespace ListViewTask
                         RunOnUiThread(() => { Toast.MakeText(this, "Успешно изпратихте сигнал", ToastLength.Long).Show(); });
                         var intent = new Intent(this, typeof(MainActivity));
                         StartActivity(intent);
-                    }
-                    //HttpResponseMessage response = 
-                    //   client.PostAsync("http://192.168.2.222/VIKWebApi/api/postimage", form).Result;
+                    }                 
                     else
                     {
                         RunOnUiThread(() => { RefreshProgressDialogAndToastWhenCanNotSentSignalWithOutImage(); });
@@ -463,8 +454,6 @@ namespace ListViewTask
 
                         MultipartFormDataContent form = new MultipartFormDataContent();
  
-                        
-                        
                         StringContent number = new StringContent(mPhoneNumber.Text.ToString());
                         StringContent description = new StringContent(mDescription.Text.ToString());
                         StringContent city = new StringContent(mCity.Text.ToString());

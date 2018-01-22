@@ -72,10 +72,6 @@ namespace ListViewTask
 
         private void MAddCustomer_Click(object sender, EventArgs e)
         {
-            // main thread  // using ProgresBar
-            // RunOnUiThread(() => { mProgressBar.Visibility = ViewStates.Visible; });
-
-            //using progresDialog
             RunOnUiThread(() => { StarShowingPtogressDialog(); });
    
             //antother thread
@@ -94,12 +90,6 @@ namespace ListViewTask
             progress.Show();
         }
 
-        private void MakeVisiblePreobressBar()
-        {
-          //  mProgressBar.Visibility = ViewStates.Visible;
-        }
-
-     
         private void AddNewCustomer()
         {
             
@@ -223,21 +213,13 @@ namespace ListViewTask
         {
             EncrypConnection encryp = new EncrypConnection();
 
-            //GeneratePassword pass = new GeneratePassword();
-
-            //string model;
-            //string dateTimeTikcs;
-
-            //model = pass.GetDeviceName();
-            //dateTimeTikcs = pass.GetDateTimeTiks();
-
-            //string finalPass = pass.secretPass + model + dateTimeTikcs;
 
             string crypFinalPass = encryp.Encrypt();
 
             ConnectToApi connectToApi = new ConnectToApi();
 
-            string localParamBillNumber = billNumber;   // to use RefreshErrorAndProgresBarWhenSuccsesfullyAddACustomer
+            // to use RefreshErrorAndProgresBarWhenSuccsesfullyAddACustomer
+            string localParamBillNumber = billNumber;   
 
             //check the connection
             bool connection = connectToApi.CheckConnectionOfVikSite(); 
@@ -246,15 +228,12 @@ namespace ListViewTask
             if (connection == true)
             {
 
-                // !!!!!!!!!!!!!!! realn api
+                // test api url
                 //  string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/" + billNumber + "/" + egn;
 
-                ////test api
+                ////real api url
                 string realUrl = ConnectToApi.urlAPI + "api/abonats/" + crypFinalPass + "/" + billNumber + "/" + egn + "/"
                                 + ConnectToApi.updateByAddCutomerButton + "/";
-
-                //var server = new Uri(url);
-                //var resource = new Uri(server, realUrl);
 
                 var jsonResponse = connectToApi.FetchApiDataAsync(realUrl); 
 
@@ -268,14 +247,6 @@ namespace ListViewTask
 
                     return;
                 }
-                // check in vikSite is there a customer with this billNumber (is billNumber correct)
-                //else if (jsonResponse == "[]")
-                //{
-                //    RunOnUiThread(() => 
-                //    {
-                //        RefreshErrorAndProgressBarWhenEgnOrBillNumberIsNotCorrect();
-                //    });
-                //}
 
                 // check is billNumber correct and get and save customer in phone
                 else if (jsonResponse != null)
@@ -341,7 +312,7 @@ namespace ListViewTask
             {
                 RunOnUiThread(() => RefreshProgressDialogAndToastWhenThereIsNoConnection());
 
-                return;   // nqma6e return
+                return;   
             }
         }
 

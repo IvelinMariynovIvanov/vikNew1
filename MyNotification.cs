@@ -17,13 +17,7 @@ namespace ListViewTask
 {
     public class MyNotification : AppCompatActivity
     {
-        //private Intent mIntent;
-        ////private Context mContext;
-
-        ////public MyNotification(Context context)
-        ////{
-        ////    this.mContext = context;
-        ////}
+   
 
         public void SentNotificationForOverdue(List<Customer> countНotifyInvoiceOverdueCustomers)
         {

@@ -15,9 +15,7 @@ namespace ListViewTask
 {
     public  class ViewHolder : Java.Lang.Object
     {
-        //   public ImageView Edit { get; set; }
-        // public ImageView Delete { get ; set ; }
-
+     
         public Button Edit { get; set; }
         public Button Delete { get; set; }
 
@@ -40,5 +38,6 @@ namespace ListViewTask
         public bool Report { get; set; }
 
         public Color color { get; set; }
+
     }
 }
