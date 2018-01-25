@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using Android.Graphics;
 using System.Threading;
 using System.Globalization;
+using Java.Lang;
+using System.Threading.Tasks;
 
 namespace ListViewTask
 {
@@ -63,6 +65,7 @@ namespace ListViewTask
         }
 
         
+
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             Customer customer = _customers[position];  // just for checking the position
@@ -109,7 +112,8 @@ namespace ListViewTask
   
                     holder.Delete.Click += (object sender, EventArgs e) =>
                 {
-                    DeleteCurrentCustomer(position, holder);
+                  
+                    DeleteCurrentCustomer(position, holder, row);
           
                 };
 
@@ -250,7 +254,7 @@ namespace ListViewTask
             // alertDialog.Show();
         }
 
-        private void DeleteCurrentCustomer(int position, ViewHolder holder)
+        private void DeleteCurrentCustomer(int position, ViewHolder holder, View row)
         {
             var rowName = holder.FullName.Text;
 
@@ -259,8 +263,10 @@ namespace ListViewTask
             alertDialog.SetMessage($"Изтрий клиент                                       {holder.FullName.Text}");
             alertDialog.SetCancelable(false); // may click outside the dialog
 
-            alertDialog.SetPositiveButton("Да", delegate
+            alertDialog.SetPositiveButton("Да", async delegate
             {
+                await AnimateWhenDeleteACustomerAsync(row);
+                
                 ISharedPreferences pref = Application.Context.GetSharedPreferences("PREFERENCE_NAME", FileCreationMode.Private);
 
                 // clear all data in PREFERENCE_NAME
@@ -281,14 +287,27 @@ namespace ListViewTask
 
                 editor.Commit();
 
-
             });
 
             alertDialog.SetNeutralButton("Не", delegate
             {
                  alertDialog.Dispose();
             });
+
             alertDialog.Show();
+        }
+
+        private static async Task AnimateWhenDeleteACustomerAsync(View row)
+        {
+            await Task.Run(() =>
+            {
+                row.Animate()
+                .SetDuration(750)
+                .Alpha(0);
+            });
+
+            await Task.Delay(750);
+          
         }
 
         private List<Customer> GetCountNewНotifyNewInvoiceCustomers()
